@@ -9,7 +9,7 @@
 | Captain     |      Joe Tamulaitis    |
 | Captain     |   jpt5@illinois.edu    |
 | Member1     |   Vincent Roszkowiak   |
-| Member1     |   |
+| Member1     |    vcr3@illinois.edu   |
 | Member2     |    |  
 | Member2     | |
 | Member3     |                        |
