@@ -8,7 +8,7 @@
 | TeamName    | StructuredQueryLegends |
 | Captain     |      Joe Tamulaitis    |
 | Captain     |   jpt5@illinois.edu    |
-| Member1     |              |
+| Member1     |   Vincent Roszkowiak   |
 | Member1     |   |
 | Member2     |    |  
 | Member2     | |
