@@ -10,10 +10,10 @@
 | Captain     |   jpt5@illinois.edu    |
 | Member1     |   Vincent Roszkowiak   |
 | Member1     |    vcr3@illinois.edu   |
-| Member2     |    |  
-| Member2     | |
-| Member3     |                        |
-| Member3     |                        |
+| Member2     |   Aadit Roy Chowdhury  |
+| Member2     |   aaditr2@illinois.edu |
+| Member3     |     Shreyas Sriram     |
+| Member3     |   ssrir5@illinois.edu  |
 
 ## Project Information
 
