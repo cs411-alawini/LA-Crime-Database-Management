@@ -1,3 +1,5 @@
+<img src="docs\GCPConnection.PNG">
+
 # DDL Code
 CREATE TABLE Report(\
    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Division of Records Number INT,\
