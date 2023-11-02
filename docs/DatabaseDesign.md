@@ -1,4 +1,4 @@
-<img src="docs\GCPConnection.PNG">
+<img src="GCPConnection.PNG">
 
 # DDL Code
 CREATE TABLE Report(\
