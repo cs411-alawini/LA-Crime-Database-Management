@@ -71,6 +71,8 @@ CREATE TABLE Crime Codes(\
 
 <img src="Victim.PNG">
 
+<img src="MO.PNG">
+
 # SQL Queries
 ### What communities have the most crime in LA (ordering):
 SELECT Location.areaName, COUNT(Location.areaName) AS CRIMECOUNT FROM (Report JOIN Location ON Location.area = Report.area) GROUP BY Location.areaName ORDER BY CRIMECOUNT LIMIT 15;
@@ -88,40 +90,52 @@ SELECT Victim.descent, COUNT(Victim.descent) AS descentCount FROM Victim JOIN Re
 ## Query 1
 
 ### No Index
-<img src="Explain5.PNG">
+<img src="Index1.PNG">
 
-### Index On Area
+We noticed that there is a table scan on the report table, so we decided to try adding an index to the columns from that table that are used by this query.
 
-<img src="Explain6.PNG">
+### Index On Report.Area
 
-### Index on AreaName
+<img src="Index2.PNG">
 
-<img src="Explain7.PNG">
+The operations the use the Report table are now much faster, but the way that the query was reordered caused it to take longer than it did before. Now, it is doing a table scan on the Location table, so we will add an index on the columns of that table that don't have an index already.
+
+### Index on Location.AreaName and Report.Area
+
+<img src="Index3.PNG">
+
+Now, there are no more table scans, and the query runs much faster than it did originally. Just to see, we will check how much performance changes with only the Location.AreaName index.
 
 ### Index on Area and AreaName
 
-<img src="Explain8.PNG">
+<img src="Index4.PNG">
 
+We see that both indices are necessary to improve the performance of the query because the slow table scans are now back once we remove the index from the report table.
 
-None of the indexes that we tried produced a significant difference in performance. Therefore, for this query there is no reason to use them.
+For our final indexing structure for this query, we decided to have an index on Location.AreaName and Report.Area, since that was the combination that resulted in the best possible query speed.
 
 ## Query 2
 
 ### No Index
 
-<img src="Explain1.PNG">
+<img src="Index5.PNG">
 
-### Index on division of records number for records table
+There is a table scan on a temporary table, so to speed this up, we will try to add indices to columns that will be in this table.
 
-<img src="Explain2.PNG">
+### Index on Victim.victimDescent
 
+<img src="Index6.PNG">
 
-### Index on Victim Descent
+Adding an index on columns in the temporary table didn't seem to make a difference, so we decided to try adding an index to the columns that we are filtering by.
 
-<img src="Explain3.PNG">
+### Index on Victim.victimDescent and Report.dateOccurred
 
-### Index on Victim Descent and Index on division of records number for records table
+<img src="Index7.PNG">
 
-<img src="Explain4.PNG">
+This index improved the speed of the query drastically, since it was an index range scan instead of a filter operation on Report.dateOccurred. Finally, we decided to try without the index on victimDescent to see if it would make a difference.
 
-The index does not reduce the scan cost and rows. However, it does increases the inner join cost. The costs can be higher for a table with a non-optimal clustered index, followed by on tables with a non-clustered index or no indexes at all.
+### Index on Report.dateOccurred
+
+<img src="Index8.PNG">
+
+Getting rid of the victimDescent index actually sped up the aggregation step, so for our final index structure, we will be having an index on only the Report.dateOccurred column for this query.
