@@ -1,7 +1,7 @@
 """ Specifies routing for the application"""
 from flask import render_template, request, jsonify
-from app.database import app
-from app.database import database as db_helper
+from app import app
+from app import database as db_helper
 
 @app.route("/delete/<int:task_id>", methods=['POST'])
 def delete(task_id):
@@ -46,8 +46,31 @@ def create():
     return jsonify(result)
 
 
-@app.route("/")
-def homepage():
-    """ returns rendered homepage """
-    items = db_helper.fetch_todo()
-    return render_template("index.html", items=items)
+# @app.route("/")
+# def homepage():
+#     """ returns rendered homepage """
+#     items = db_helper.fetch_todo()
+#     return render_template("index.html", items=items)
+
+# @app.route("/crimeDescription", methods=["POST"])
+# async def start_subscription():
+#     global Idcount, dict
+
+#     firstEmail: str = request.form.get("firstEmail")
+#     secondEmail: str = request.form.get("secondEmail")
+    
+#     if dict.get((firstEmail, secondEmail)) == None:
+#         Idcount = Idcount + 1
+#         dict[(firstEmail, secondEmail)] = str(Idcount)
+    
+#     data: WorkflowOptions = WorkflowOptions(firstEmail, secondEmail)
+#     await client.start_workflow(
+#         SendEmailWorkflow.run,
+#         data,
+#         id=dict[(firstEmail, secondEmail)],
+#         task_queue=task_queue_name,
+#     )
+
+#     message = jsonify({"message": "Resource created successfully"})
+#     response = make_response(message, 201)
+#     return response
