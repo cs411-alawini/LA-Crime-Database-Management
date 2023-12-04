@@ -43,12 +43,12 @@
             <div class="modal-body">
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="task-form-display">Task</span>
-                    <input type="text" class="form-control" placeholder="Description of task" aria-label="task-name" aria-describedby="basic-addon1">
+                    <input type="text" id="text" class="form-control" placeholder="Description of task" aria-label="task-name" aria-describedby="basic-addon1">
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button id="submit-task" type="button" class="btn btn-primary">Save changes</button>
+                <button id="submit-task" onclick="save()" type="button" class="btn btn-primary">Save changes</button>
             </div>
             </div>
         </div>
@@ -69,7 +69,7 @@
         </tr>
         </thead>
 
-        <tbody>
+        <tbody id="table-body">
         {% for item in items %}
             <tr>
                 <td>{{item.id}}</td>
@@ -108,5 +108,33 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='script/modal.js') }}"></script>
+    <script>function save() {
+        console.log('function running')
+        // Get the task input value
+        var taskDescription = $("#text").val();
+
+        // Check if the task input is not empty
+        if (taskDescription.trim() !== "") {
+            // Append a new row to the table body
+            $("#table-body").append(
+                "<tr>" +
+                "<td>New</td>" +
+                "<td>" + taskDescription + "</td>" +
+                "<td><button type='button' class='btn btn-outline-secondary btn-sm state'>Todo</button></td>" +
+                "<td><button type='button' class='btn btn-outline-info btn-sm' data-bs-toggle='modal' data-bs-target='#task-modal'><i class='fa fa-pen fa-1' aria-hidden='true'></i></button></td>" +
+                "<td><button class='btn btn-outline-secondary btn-sm remove' type='button'><i class='fa fa-trash fa-1' aria-hidden='true'></i></button></td>" +
+                "</tr>"
+            );
+
+            // Clear the task input
+            $("#text").val("");
+
+            // Close the modal
+            $("#task-modal").modal("hide");
+        } else {
+            // Show an alert or handle the case where the input is empty
+            alert("Task description cannot be empty.");
+        }
+    }</script>
 
 </html>
