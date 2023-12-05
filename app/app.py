@@ -5,15 +5,12 @@ from flask import Flask
 from flask import Flask, render_template, request, jsonify
 import requests
 from datetime import datetime, timedelta, time
+from database import fetch_descriptions, insert_new_description, remove_description
 
 import re
 import json
 
 app = Flask(__name__)
-
-@app.route('/')
-def index():
-    return render_template("temp.html")
 
 def init_connection_engine():
     """ initialize database setup
@@ -23,13 +20,35 @@ def init_connection_engine():
         pool -- a connection to GCP MySQL
     """
 
-
-
     pool = sqlalchemy.create_engine(
         "mysql+pymysql://root:sqlegends@35.222.239.171/sqlegends"
     )
 
     return pool
 
-
 db = init_connection_engine()
+
+@app.route('/')
+def index():
+    return render_template("temp.html")
+
+
+@app.route('/crimeDescription', methods=['GET'])
+def check_description():
+        crimeDescription = fetch_descriptions(db)
+        return crimeDescription
+
+@app.route('/crimeDescription/insert', methods=['POST'])
+def insert_description():
+    data = request.get_json()
+    print(data)
+    newCrimeDescription = insert_new_description(data['CrimeCode'], data['CrimeCodeDescription'], db)
+    return newCrimeDescription
+
+@app.route('/crimeDescription/delete/<int:description_id>', methods=['DELETE'])
+def delete_description(description_id):
+    description = remove_description(description_id, db)
+    return description
+
+
+

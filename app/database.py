@@ -1,5 +1,8 @@
 """Defines all the functions related to the database"""
-from app import db
+import string
+import random
+from flask import jsonify, make_response
+from sqlalchemy import text
 
 def fetch_todo() -> dict:
     """Reads all tasks listed in the todo table
@@ -7,80 +10,41 @@ def fetch_todo() -> dict:
     Returns:
         A list of dictionaries
     """
+    
 
+def fetch_descriptions(db):
     conn = db.connect()
-    query_results = conn.execute("Select * from tasks;").fetchall()
+    query = 'SELECT * FROM CrimeCode;'
+    query_results = conn.execute(text(query))
     conn.close()
-    todo_list = []
+    ret_res = []
     for result in query_results:
         item = {
-            "id": result[0],
-            "task": result[1],
-            "status": result[2]
+            "CrimeCode": result[0],
+            "CrimeCodeDescription": result[1]
         }
-        todo_list.append(item)
+        ret_res.append(item)
+    return make_response(jsonify(ret_res), 200)
 
-    return todo_list
 
-
-def update_task_entry(task_id: int, text: str) -> None:
-    """Updates task description based on given `task_id`
-
-    Args:
-        task_id (int): Targeted task_id
-        text (str): Updated description
-
-    Returns:
-        None
-    """
-
+def insert_new_description(CrimeCode, CrimeCodeDescription, db) -> bool:
     conn = db.connect()
-    query = 'Update tasks set task = "{}" where id = {};'.format(text, task_id)
-    conn.execute(query)
+    query = f'INSERT INTO CrimeCode (CrimeCodeCode, CrimeCodeCodeDescription) VALUES ("{CrimeCode}", "{CrimeCodeDescription}");'
+    try:
+        conn.execute((text(query)))
+    except Exception as e:
+        conn.close()
+        return make_response({"success": False, "response": f"{e}"}, 400)
     conn.close()
+    return make_response({"success": True, "response": "Done"}, 200)
 
-
-def update_status_entry(task_id: int, text: str) -> None:
-    """Updates task status based on given `task_id`
-
-    Args:
-        task_id (int): Targeted task_id
-        text (str): Updated status
-
-    Returns:
-        None
-    """
-
+def remove_description(description_id, db):
     conn = db.connect()
-    query = 'Update tasks set status = "{}" where id = {};'.format(text, task_id)
-    conn.execute(query)
+    query = f'DELETE FROM CrimeCode WHERE CrimeCodeCode = "{description_id}";'
+    try:
+        conn.execute((text(query)))
+    except Exception as e:
+        conn.close()
+        return make_response({"success": False, "response": f"{e}"}, 400)
     conn.close()
-
-
-def insert_new_task(text: str) ->  int:
-    """Insert new task to todo table.
-
-    Args:
-        text (str): Task description
-
-    Returns: The task ID for the inserted entry
-    """
-
-    conn = db.connect()
-    query = 'Insert Into tasks (task, status) VALUES ("{}", "{}");'.format(
-        text, "Todo")
-    conn.execute(query)
-    query_results = conn.execute("Select LAST_INSERT_ID();")
-    query_results = [x for x in query_results]
-    task_id = query_results[0][0]
-    conn.close()
-
-    return task_id
-
-
-def remove_task_by_id(task_id: int) -> None:
-    """ remove entries based on task ID """
-    conn = db.connect()
-    query = 'Delete From tasks where id={};'.format(task_id)
-    conn.execute(query)
-    conn.close()
+    return make_response({"success": True, "response": "Done"}, 200)
