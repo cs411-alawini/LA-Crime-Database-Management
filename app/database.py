@@ -48,3 +48,25 @@ def remove_description(description_id, db):
         return make_response({"success": False, "response": f"{e}"}, 400)
     conn.close()
     return make_response({"success": True, "response": "Done"}, 200)
+
+def update_description(description_id, input, db):
+    conn = db.connect()
+    original_data = conn.execute(f'SELECT * FROM CrimeCode WHERE CrimeCodeCode = "{description_id}";')
+    
+    if original_data is None:
+        return make_response({"success": False, "response": "CrimeCodeCode not found"}, 400)
+    
+    original_data_dict = original_data.mappings().all()[0]
+    crime_code_code = input.get('CrimeCodeCode', original_data_dict["CrimeCodeCode"])
+    crime_code_code_description = input.get('CrimeCodeCodeDescription', original_data_dict["CrimeCodeCodeDescription"])
+    
+    query = f'UPDATE CrimeCode SET CrimeCodeCode = "{crime_code_code}", CrimeCodeCode = "{crime_code_code_description}" 
+                WHERE CrimeCodeCode = "{description_id}";'
+                
+    try:
+        conn.execute(query)
+    except Exception as e:
+        conn.close()
+        return make_response({"success": False, "response": f"{e}"}, 400)
+    conn.close()
+    return make_response({"success": True, "response": "Done"}, 200)

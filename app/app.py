@@ -5,7 +5,7 @@ from flask import Flask
 from flask import Flask, render_template, request, jsonify
 import requests
 from datetime import datetime, timedelta, time
-from database import fetch_descriptions, insert_new_description, remove_description
+from database import fetch_descriptions, insert_new_description, remove_description, update_description
 
 import re
 import json
@@ -48,6 +48,12 @@ def insert_description():
 @app.route('/crimeDescription/delete/<int:description_id>', methods=['DELETE'])
 def delete_description(description_id):
     description = remove_description(description_id, db)
+    return description
+
+@app.route('/crimeDescription/update/<int:description_id>', methods=['PUT'])
+def update_description(description_id):
+    data = request.get_json()
+    description = update_description(description_id, data, db)
     return description
 
 
