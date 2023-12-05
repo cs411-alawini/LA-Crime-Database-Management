@@ -33,9 +33,9 @@ def index():
     return render_template("temp.html")
 
 
-@app.route('/crimeDescription', methods=['GET'])
-def check_description():
-        crimeDescription = fetch_descriptions(db)
+@app.route('/crimeDescription/<int:description_id>', methods=['GET'])
+def check_description(description_id):
+        crimeDescription = fetch_descriptions(description_id, db)
         return crimeDescription
 
 @app.route('/crimeDescription/insert', methods=['POST'])
@@ -55,6 +55,3 @@ def update_description(description_id):
     data = request.get_json()
     description = update_description(description_id, data, db)
     return description
-
-
-

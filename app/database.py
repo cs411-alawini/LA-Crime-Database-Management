@@ -12,9 +12,24 @@ def fetch_todo() -> dict:
     """
     
 
-def fetch_descriptions(db):
+# def fetch_descriptions(db):
+#     conn = db.connect()
+#     query = 'SELECT * FROM CrimeCode;'
+#     query_results = conn.execute(text(query))
+#     conn.close()
+#     ret_res = []
+#     for result in query_results:
+#         item = {
+#             "CrimeCode": result[0],
+#             "CrimeCodeDescription": result[1]
+#         }
+#         ret_res.append(item)
+#     return make_response(jsonify(ret_res), 200)
+
+
+def fetch_descriptions(description_id, db):
     conn = db.connect()
-    query = 'SELECT * FROM CrimeCode;'
+    query = f'SELECT * FROM CrimeCode WHERE CrimeCodeCode = "{description_id}";'
     query_results = conn.execute(text(query))
     conn.close()
     ret_res = []
@@ -25,6 +40,31 @@ def fetch_descriptions(db):
         }
         ret_res.append(item)
     return make_response(jsonify(ret_res), 200)
+
+def fetch_report(db):
+    conn = db.connect()
+    query = "SELECT * FROM REPORT LIMIT 20;"
+    query_results = conn.execute(text(query))
+    conn.close
+    ret_res = []
+    for result in query_results:
+        item = {
+                "divisionRecordsNumber" : result[0],
+                "dateReported" : result[1],
+                "dateOccurred" : result[2],
+                "timeOccurred" : result[3],
+                "lat" : result[4],
+                "lon" : result[5],
+                "crimCode" : result[6],
+                "weaponUsedCode" : result[7],
+                "moCodes" : result[8],
+                "area" : result[9],
+                "premisesCode" : result[10]
+        }
+        ret_res.append(item)
+    return make_response(jsonify(ret_res), 200)
+
+
 
 
 def insert_new_description(CrimeCode, CrimeCodeDescription, db) -> bool:
@@ -60,8 +100,7 @@ def update_description(description_id, input, db):
     crime_code_code = input.get('CrimeCodeCode', original_data_dict["CrimeCodeCode"])
     crime_code_code_description = input.get('CrimeCodeCodeDescription', original_data_dict["CrimeCodeCodeDescription"])
     
-    query = f'UPDATE CrimeCode SET CrimeCodeCode = "{crime_code_code}", CrimeCodeCode = "{crime_code_code_description}" 
-                WHERE CrimeCodeCode = "{description_id}";'
+    query = f'UPDATE CrimeCode SET CrimeCodeCode = "{crime_code_code}", CrimeCodeCode = "{crime_code_code_description}" WHERE CrimeCodeCode = "{description_id}";'
                 
     try:
         conn.execute(query)

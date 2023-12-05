@@ -1,90 +1,64 @@
-$(document).ready(function () {
-    // example: https://getbootstrap.com/docs/4.2/components/modal/
-    // show modal
-    $('#task-modal').on('show.bs.modal', function (event) {
-        const button = $(event.relatedTarget) // Button that triggered the modal
-        const taskID = button.data('source') // Extract info from data-* attributes
-        const content = button.data('content') // Extract info from data-* attributes
+let Workflows = function () {
 
-        const modal = $(this)
-        if (taskID === 'New Task') {
-            modal.find('.modal-title').text(taskID)
-            $('#task-form-display').removeAttr('taskID')
-        } else {
-            modal.find('.modal-title').text('Edit Task ' + taskID)
-            $('#task-form-display').attr('taskID', taskID)
-        }
+    let DescriptionId = document.getElementById("DescriptionId").value;
+    print(DescriptionId)
+    
+    var data = new FormData();
 
-        if (content) {
-            modal.find('.form-control').val(content);
-        } else {
-            modal.find('.form-control').val('');
-        }
+    data.append("DescriptionId", DescriptionId);
+
+    fetch("/crimeDescription/${DescriptionId}", {
+        method: "GET",
     })
-
-
-    $('#submit-task').click(function () {
-        const tID = $('#task-form-display').attr('taskID');
-        console.log($('#task-modal').find('.form-control').val())
-        $.ajax({
-            type: 'POST',
-            url: tID ? '/edit/' + tID : '/create',
-            contentType: 'application/json;charset=UTF-8',
-            data: JSON.stringify({
-                'description': $('#task-modal').find('.form-control').val()
-            }),
-            success: function (res) {
-                console.log(res.response)
-                location.reload();
-            },
-            error: function () {
-                console.log('Error');
+        .then((response) => response.json())
+        .then((json) => {
+            if (json.error) {
+                let e = document.getElementById("output");
+                e.innerHTML =
+                    `<div class="alert alert-danger mb-3" role="alert"><h3>Error</h3>${json.error}</div>`
+                    + e.innerHTML;
             }
         });
-    });
+};
 
-    $('.remove').click(function () {
-        const remove = $(this)
-        $.ajax({
-            type: 'POST',
-            url: '/delete/' + remove.data('source'),
-            success: function (res) {
-                console.log(res.response)
-                location.reload();
-            },
-            error: function () {
-                console.log('Error');
-            }
-        });
-    });
 
-    $('.state').click(function () {
-        const state = $(this)
-        const tID = state.data('source')
-        const new_state = "";
-        if (state.text() === "In Progress") {
-            new_state = "Complete"
-        } else if (state.text() === "Complete") {
-            new_state = "Todo"
-        } else if (state.text() === "Todo") {
-            new_state = "In Progress"
-        }
 
-        $.ajax({
-            type: 'POST',
-            url: '/edit/' + tID,
-            contentType: 'application/json;charset=UTF-8',
-            data: JSON.stringify({
-                'status': new_state
-            }),
-            success: function (res) {
-                console.log(res)
-                location.reload();
-            },
-            error: function () {
-                console.log('Error');
-            }
-        });
-    });
 
-});
+//     fetch("/subscribe", {
+//         method: "POST",
+//         body: data,
+//     })
+//         .then((response) => response.json())
+//         .then((json) => {
+//             if (json.error) {
+//                 let e = document.getElementById("output");
+//                 e.innerHTML =
+//                     `<div class="alert alert-danger mb-3" role="alert"><h3>Error</h3>${json.error}</div>`
+//                     + e.innerHTML;
+//             }
+//         });
+// };
+
+// let Unsubscribe = function () {
+
+//     let firstEmail = document.getElementById("firstEmail").value;
+//     let secondEmail = document.getElementById("secondEmail").value;
+    
+//     var data = new FormData();
+//     data.append("firstEmail", firstEmail);
+//     data.append("secondEmail", secondEmail);
+
+//     fetch("/unsubscribe", {
+//         method: "DELETE",
+//         body: data,
+//     })
+//         .then((response) => response.json())
+//         .then((json) => {
+//             if (json.error) {
+//                 let e = document.getElementById("output");
+//                 e.innerHTML =
+//                     `<div class="alert alert-danger mb-3" role="alert"><h3>Error</h3>${json.error}</div>`
+//                     + e.innerHTML;
+//             }
+//         });
+// };
