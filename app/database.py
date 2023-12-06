@@ -12,9 +12,22 @@ def fetch_todo() -> dict:
     """
     
 
+# def fetch_descriptions(description_id, db):
+#     conn = db.connect()
+#     query = 'SELECT * FROM CrimeCode;'
+#     query_results = conn.execute(text(query))
+#     conn.close()
+#     ret_res = []
+#     for result in query_results:
+#         item = {
+#             "CrimeCode": result[0],
+#             "CrimeCodeDescription": result[1]
+#         }
+#         ret_res.append(item)
+#     return make_response(jsonify(ret_res), 200)
 def fetch_descriptions(db):
     conn = db.connect()
-    query = 'SELECT * FROM CrimeCode;'
+    query = f'SELECT * FROM CrimeCode;'
     query_results = conn.execute(text(query))
     conn.close()
     ret_res = []
@@ -60,8 +73,7 @@ def update_description(description_id, input, db):
     crime_code_code = input.get('CrimeCodeCode', original_data_dict["CrimeCodeCode"])
     crime_code_code_description = input.get('CrimeCodeCodeDescription', original_data_dict["CrimeCodeCodeDescription"])
     
-    query = f'UPDATE CrimeCode SET CrimeCodeCode = "{crime_code_code}", CrimeCodeCode = "{crime_code_code_description}" 
-                WHERE CrimeCodeCode = "{description_id}";'
+    query = f'UPDATE CrimeCode SET CrimeCodeCode = "{crime_code_code}", CrimeCodeCode = "{crime_code_code_description}" WHERE CrimeCodeCode = "{description_id}";'
                 
     try:
         conn.execute(query)
