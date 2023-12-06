@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -12,35 +13,154 @@
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css2?family=Archivo&family=Neuton&family=Share+Tech+Mono&display=swap"
         rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" src="../templates/temp.css" />
+
+    <script type="text/javascript" src="../static/script/modal.js"></script>
 </head>
 
 <body>
     <main class="content container flex-grow-1 mb-2">
-        <form onsubmit="Workflows(); return false;">
-            <div class="form-group">
-                <div class="row my-3">
-                    <div class="col-4">
-                        <label for="Crime DescriptionId">Crime DescriptionId:</label>
-                        <input type="number" placeholder="DescriptionId.." id="DescriptionId">
-                    </div>
+        <div class="form-group">
+            <div class="row my-3">
+                <div class="col-4">
+                    <label for="divisionRecordsNumber"> divisionRecordsNumber:</label>
+                    <input type="number" placeholder="divisionRecordsNumber.." id="divisionRecordsNumber">
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Subscribe</button>
-        </form>
-        <form onsubmit="Unsubscribe(); return false;">
-            <div class="form-group">
-                <div class="row my-3">
-                    <div class="col-4">
-                        <button type="submit" class="btn btn-danger">Unsubscribe</button>
-                    </div>
+            <div class="row my-3">
+                <div class="col-4">
+                    <label for="crimeCode">crimeCode :</label>
+                    <input type="number" placeholder="crimeCode.." id="crimeCode">
                 </div>
             </div>
-        </form>
+            <div class="row my-3">
+                <div class="col-4">
+                    <label for="area">area:</label>
+                    <input type="number" placeholder="area.." id="area">
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="Workflows()">Subscribe</button>
+
+        <div class="form-group">
+            <div class="row my-3">
+                <div class="col-4">
+                    <label for="Crime DescriptionId for deletion">Crime DescriptionId:</label>
+                    <input type="number" placeholder="DescriptionId.." id="DescriptionIdDeletion">
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="Deleting()">Delete</button>
+
+        <div class="form-group">
+            <div class="row my-3">
+                <div class="col-4">
+                    <label for="divisionRecordsNumber">division Records Number:</label>
+                    <input type="number" placeholder="divisionRecordsNumber.." id="divisionRecordsNumber">
+                </div>
+                <div class="col-4">
+                    <label for="dateReported">Date Reported:</label>
+                    <input type="date" placeholder="dateReported.." id="dateReported">
+                </div>
+                <div class="col-4">
+                    <label for="dateOccurred">Date Occurred:</label>
+                    <input type="date" placeholder="dateOccurred.." id="dateOccurred">
+                </div>
+                <div class="col-4">
+                    <label for="timeOccured">Time Occurred:</label>
+                    <input type="int" placeholder="timeOccured.." id="timeOccured">
+                </div>
+                <div class="col-4">
+                    <label for="lat">Latitude:</label>
+                    <input type="number" step="any" placeholder="lat.." id="lat">
+                </div>
+                <div class="col-4">
+                    <label for="lon">Longitude:</label>
+                    <input type="number" step="any" placeholder="lon.." id="lon">
+                </div>
+                <div class="col-4">
+                    <label for="crimeCode">Crime Code:</label>
+                    <input type="number" placeholder="crimeCode.." id="crimeCode">
+                </div>
+                <div class="col-4">
+                    <label for="weaponUsedCode">weaponUsedCode:</label>
+                    <input type="number" step="any" placeholder="weaponUsedCode.." id="weaponUsedCode">
+                </div>
+                <div class="col-4">
+                    <label for="moCodes">moCodes:</label>
+                    <input type="string" step="any" placeholder="moCodes.." id="moCodes">
+                </div>
+                <div class="col-4">
+                    <label for="area">area:</label>
+                    <input type="number" placeholder="area.." id="area">
+                </div>
+                <div class="col-4">
+                    <label for="premisesCode">Premises Code:</label>
+                    <input type="number" placeholder="premisesCode.." id="premisesCode">
+                </div>
+            </div>
+        <button type="button" class="btn btn-primary" onclick="Posting()">Add</button>
+
+
+        <div class="form-group">
+            <div class="row my-3">
+                <div class="col-4">
+                    <label for="divisionRecordsNumber">Crime DescriptionId:</label>
+                    <input type="number" placeholder="divisionRecordsNumber.." id="divisionRecordsNumber">
+                </div>
+                <div class="col-4">
+                    <label for="lat2">Crime Description:</label>
+                    <input type="number" placeholder="lat2.." id="lat2">
+                </div>
+                <div class="col-4">
+                    <label for="lon2">Crime Description:</label>
+                    <input type="number" placeholder="lon2.." id="lon2">
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="Updating()">Change</button>
+
+        <div class="form-group">
+            <div class="row my-3">
+                <div class="col-4">
+                    <label for="crimeCode">Crime Code:</label>
+                    <input type="number" placeholder="Crime Code.." id="crimeCodemap">
+                </div>
+                <div class="col-4">
+                    <label for="area">Area:</label>
+                    <input type="number" placeholder="Area.." id="areamap">
+                </div>
+                <div class="col-4">
+                    <label for="limit">Limit:</label>
+                    <input type="number" placeholder="Limit.." id="limitmap">
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <button type="button" class="btn btn-primary" onclick="submitForm()">Submit</button>
+
+        </div>
+        <div class="table">
+            <table id="CrimeDescription">
+                <!-- <thead>
+                    <tr>
+                        <th>Crime Code</th>
+                        <th>Crime Code Description</th>
+                    </tr>
+                </thead> -->
+                <tbody></tbody>
+            </table>
+
+        </div>
+
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
         integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
         crossorigin="anonymous"></script>
-    <script type="text/javascript" src="app/static/script/modal.js"></script>
+
 </body>
 
 </html>
